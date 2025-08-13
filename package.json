@@ -1,0 +1,29 @@
+{
+  "name": "project_7sem",
+  "version": "1.0.0",
+  "description": "online forum/discussion board",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhythmtrehan0011/project_7sem.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rhythmtrehan0011/project_7sem/issues"
+  },
+  "homepage": "https://github.com/rhythmtrehan0011/project_7sem#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongodb": "^6.18.0",
+    "mongoose": "^8.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
