@@ -9,9 +9,11 @@ require("./config/passport")(passport);
 app.use(passport.initialize());
 
 const userRoute = require("./routes/authRoutes");
+const profileRoute = require("./routes/profileRoutes");
 
 app.use(express.json());
 app.use("/api/User", userRoute);
+app.use("/api/Profile", profileRoute);
 
 dbConnect();
 app.listen(port, () => {
