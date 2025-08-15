@@ -1,11 +1,12 @@
 const express = require("express");
-const mongoose = require("mongoose");
 require("dotenv").config();
-
-const dbConnect = require("./database/database");
+const passport = require("passport");
+const dbConnect = require("./config/database");
 
 const app = express();
 const port = process.env.PORT || 4000;
+require("./config/passport")(passport);
+app.use(passport.initialize());
 
 const userRoute = require("./routes/authRoutes");
 
