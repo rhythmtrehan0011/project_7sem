@@ -11,6 +11,7 @@ const userRoute=require('./routes/authRoutes')
 app.use(express.json());
 app.use('/api/User',userRoute);
 
+
 async function connectDb() {
     try{
         await mongoose.connect(process.env.MONGO_URI);
