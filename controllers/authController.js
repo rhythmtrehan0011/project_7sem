@@ -30,7 +30,7 @@ const signUpUser = async (req, res) => {
     });
     await newUser.save();
 
-    const token = generateToken(newUser._id);
+    const token = generateToken(newUser._id,res);
 
     res.status(201).json({
       message: "User created successfully",
@@ -73,7 +73,7 @@ const signInUser = async (req, res) => {
         .status(400)
         .json({ message: "invalid email or password", success: false });
     }
-    const token = generateToken(existingUser._id);
+    const token = generateToken(existingUser._id,res);
     res.status(200).json({
       message: "sign in successful",
       data: {

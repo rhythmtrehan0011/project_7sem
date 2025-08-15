@@ -5,7 +5,7 @@ const {
   updateProfile,
   followUser,
   unfollowUser,
-} = require("../controller/profileController");
+} = require("../controllers/profileController");
 
 const router = express.Router();
 
