@@ -3,7 +3,7 @@ const User = require("../models/authModel");
 
 const getProfile = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.id })
+    const profile = await Profile.findOne({ user: req.user.id })
       .populate("user", "-password")
       .populate("followers", "firstName lastName email")
       .populate("following", "firstName lastName email");
@@ -29,10 +29,10 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const { bio, location, avatar } = req.body;
-    let profile = await Profile.findOne({ user: req.id });
+    let profile = await Profile.findOne({ user: req.user.id });
     if (!profile) {
       profile = new Profile({
-        user: req.id,
+        user: req.user.id,
         bio,
         location,
         avatar,
@@ -60,13 +60,13 @@ const updateProfile = async (req, res) => {
 const followUser = async (req, res) => {
   try {
     const toFollowId = req.params.id;
-    if (toFollowId === req.id) {
+    if (toFollowId === req.user.id) {
       return res.status(400).json({
-        message: "You can'tfollow yourself",
+        message: "You can't follow yourself",
         success: false,
       });
     }
-    const me = await Profile.findOne({ user: req.id });
+    const me = await Profile.findOne({ user: req.user.id });
     const toFollow = await Profile.findOne({ user: toFollowId });
     if (!me || !toFollow) {
       return res.status(404).json({
@@ -78,8 +78,8 @@ const followUser = async (req, res) => {
       me.following.push(toFollowId);
       await me.save();
     }
-    if (!toFollow.followers.includes(req.id)) {
-      toFollow.followers.push(req.id);
+    if (!toFollow.followers.includes(req.user.id)) {
+      toFollow.followers.push(req.user.id);
       await toFollow.save();
     }
     res.status(200).json({
@@ -98,7 +98,7 @@ const followUser = async (req, res) => {
 const unfollowUser = async (req, res) => {
   try {
     const toFollowId = req.params.id;
-    const me = await Profile.findOne({ user: req.id });
+    const me = await Profile.findOne({ user: req.user.id });
     const toFollow = await Profile.findOne({ user: toFollowId });
     if (!me || !toFollow) {
       return res.status(404).json({
@@ -109,7 +109,7 @@ const unfollowUser = async (req, res) => {
     me.following = me.following.filter((id) => id.toString() !== toFollowId);
     await me.save();
     toFollow.followers = toFollow.followers.filter(
-      (id) => id.toString() !== req.id
+      (id) => id.toString() !== req.user.id
     );
     await toFollow.save();
     res.status(200).json({
