@@ -26,3 +26,5 @@ const protectedRoute = async (res, req, next) => {
     });
   }
 };
+
+module.exports = protectedRoute;
