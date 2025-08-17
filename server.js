@@ -6,18 +6,22 @@ const dbConnect = require("./config/database");
 
 const app = express();
 const port = process.env.PORT || 4000;
-require("./config/passport")(passport);
-app.use(passport.initialize());
+
+
+
+
 app.use(cookieParser());
 app.use(express.json());
+require("./config/passport")(passport);
+app.use(passport.initialize());
+
 
 const userRoute = require("./routes/authRoutes");
 const profileRoute = require("./routes/profileRoutes");
-
-const textentryroutes = require("./routes/textentryroutes");
-app.use("/api/text",textentryroutes);
+const postRoute = require("./routes/postRoutes");
 
 
+app.use("/api/Post", postRoute);
 app.use("/api/User", userRoute);
 app.use("/api/Profile", profileRoute);
 
