@@ -124,10 +124,51 @@ const addComment = async (req, res) => {
   }
 };
 
+const addReply = async (req, res) => {
+  try {
+    const { postId, commentId } = req.params;
+    const { text } = req.body;
+    if (!text) {
+      return res.status(400).json({
+        message: "Reply cannot be empty",
+        success: false,
+      });
+    }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    const comment = post.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({
+        message: "Comment not found",
+        success: false,
+      });
+    }
+    comment.replies.push({ user: req.user.id, text });
+    await post.save();
+    res.status(200).json({
+      message: "Reply added",
+      success: true,
+      data: post,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Unable to add reply",
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   getAllPosts,
   createPost,
   updatePost,
   deletePost,
   addComment,
+  addReply,
 };
