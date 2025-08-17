@@ -19,6 +19,39 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+const getPosts = async (req, res) => {
+  try {
+    const { search, author } = req.query;
+    let posts;
+    if (search) {
+      posts = await Post.find({ body: new RegExp(search, "i") })
+        .populate("author", "firstname lastname email")
+        .populate("comments.user", "firstname lastname email")
+        .sort({ createdAt: -1 });
+    } else if (author) {
+      posts = await Post.find({ author })
+        .populate("author", "firstname lastname email")
+        .populate("comments.user", "firstname lastname email")
+        .sort({ createdAt: -1 });
+    } else {
+      posts = await Post.find()
+        .populate("author", "firstname lastname email")
+        .populate("comments.user", "firstname lastname email")
+        .sort({ createdAt: -1 });
+    }
+    res.status(200).json({
+      success: true,
+      data: posts,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Cannot fetch posts",
+    });
+  }
+};
+
 const createPost = async (req, res) => {
   try {
     const { body } = req.body;
@@ -166,6 +199,7 @@ const addReply = async (req, res) => {
 
 module.exports = {
   getAllPosts,
+  getPosts,
   createPost,
   updatePost,
   deletePost,
