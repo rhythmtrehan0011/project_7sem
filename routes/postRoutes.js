@@ -27,5 +27,10 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   addComment
 );
+router.post(
+  "/:postId/comment/:commentId/reply",
+  passport.authenticate("jwt", { session: false }),
+  addReply
+);
 
 module.exports = router;
