@@ -7,10 +7,7 @@ const {
   deletePost,
   addComment,
   getPosts,
-<<<<<<< HEAD
-=======
   addReply,
->>>>>>> 45deb83559c4aa033317d2a2f2bb78d0bec660b0
 } = require("../controllers/postcontroller");
 
 const router = express.Router();
@@ -34,11 +31,7 @@ router.post(
   addComment
 );
 router.post(
-<<<<<<< HEAD
   "/:id/comment/:commentId/reply",
-=======
-  "/:postId/comment/:commentId/reply",
->>>>>>> 45deb83559c4aa033317d2a2f2bb78d0bec660b0
   passport.authenticate("jwt", { session: false }),
   addReply
 );

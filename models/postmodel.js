@@ -22,13 +22,10 @@ const commentSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-<<<<<<< HEAD
-=======
         createdAt: {
           type: Date,
           default: Date.now,
         },
->>>>>>> 45deb83559c4aa033317d2a2f2bb78d0bec660b0
       },
     ],
   },

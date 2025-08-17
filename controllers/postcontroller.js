@@ -87,10 +87,6 @@ const updatePost = async (req, res) => {
         message: "Post not found",
         success: false,
       });
-<<<<<<< HEAD
-
-=======
->>>>>>> 45deb83559c4aa033317d2a2f2bb78d0bec660b0
     if (body) post.body = body;
     await post.save();
     res.status(200).json({
@@ -207,11 +203,6 @@ module.exports = {
   updatePost,
   deletePost,
   addComment,
-<<<<<<< HEAD
   getPosts,
   addReply,
 };
-=======
-  addReply,
-};
->>>>>>> 45deb83559c4aa033317d2a2f2bb78d0bec660b0
