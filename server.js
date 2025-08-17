@@ -7,20 +7,14 @@ const dbConnect = require("./config/database");
 const app = express();
 const port = process.env.PORT || 4000;
 
-
-
-
 app.use(cookieParser());
 app.use(express.json());
 require("./config/passport")(passport);
 app.use(passport.initialize());
 
-
-const userRoute = require("./routes/authRoutes");
+const userRoute = require("./routes/userRoutes");
 const profileRoute = require("./routes/profileRoutes");
 const postRoute = require("./routes/postRoutes");
-
-
 
 app.use("/api/posts", postRoute);
 app.use("/api/users", userRoute);
