@@ -9,11 +9,15 @@ const port = process.env.PORT || 4000;
 require("./config/passport")(passport);
 app.use(passport.initialize());
 app.use(cookieParser());
+app.use(express.json());
 
 const userRoute = require("./routes/authRoutes");
 const profileRoute = require("./routes/profileRoutes");
 
-app.use(express.json());
+const textentryroutes = require("./routes/textentryroutes");
+app.use("/api/text",textentryroutes);
+
+
 app.use("/api/User", userRoute);
 app.use("/api/Profile", profileRoute);
 
