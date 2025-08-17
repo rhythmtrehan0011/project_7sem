@@ -1,5 +1,5 @@
 const Profile = require("../models/profileModel");
-const User = require("../models/authModel");
+const User = require("../models/userModel");
 
 const getProfile = async (req, res) => {
   try {

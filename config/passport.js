@@ -1,5 +1,5 @@
 const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
-const User = require("../models/authModel");
+const User = require("../models/userModel");
 
 const cookieExtractor = (req) => {
   let token = null;

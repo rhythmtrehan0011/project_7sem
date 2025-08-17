@@ -6,16 +6,26 @@ const {
   updatePost,
   deletePost,
   addComment,
-} = require("../controllers/postcontroller");
+} = require("../controllers/postController");
 
 const router = express.Router();
 
 router.get("/", getAllPosts);
-
-
 router.post("/", passport.authenticate("jwt", { session: false }), createPost);
-router.put("/:id", passport.authenticate("jwt", { session: false }), updatePost);
-router.delete("/:id", passport.authenticate("jwt", { session: false }), deletePost);
-router.post("/:id/comment", passport.authenticate("jwt", { session: false }), addComment);
+router.put(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  updatePost
+);
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  deletePost
+);
+router.post(
+  "/:id/comment",
+  passport.authenticate("jwt", { session: false }),
+  addComment
+);
 
 module.exports = router;
