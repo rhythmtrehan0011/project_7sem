@@ -21,9 +21,10 @@ const profileRoute = require("./routes/profileRoutes");
 const postRoute = require("./routes/postRoutes");
 
 
-app.use("/api/Post", postRoute);
-app.use("/api/User", userRoute);
-app.use("/api/Profile", profileRoute);
+
+app.use("/api/posts", postRoute);
+app.use("/api/users", userRoute);
+app.use("/api/profiles", profileRoute);
 
 dbConnect();
 app.listen(port, () => {
