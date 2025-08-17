@@ -20,19 +20,16 @@ const getPosts = async (req, res) => {
     let posts;
 
     if (search) {
-      // Simple search by body text
       posts = await Post.find({ body: new RegExp(search, "i") })
         .populate("author", "firstname lastname email")
         .populate("comments.user", "firstname lastname email")
         .sort({ createdAt: -1 });
     } else if (author) {
-      // Simple filter by author ID
       posts = await Post.find({ author })
         .populate("author", "firstname lastname email")
         .populate("comments.user", "firstname lastname email")
         .sort({ createdAt: -1 });
     } else {
-      // No query → return all posts
       posts = await Post.find()
         .populate("author", "firstname lastname email")
         .populate("comments.user", "firstname lastname email")
