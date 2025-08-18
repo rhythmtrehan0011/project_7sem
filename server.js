@@ -12,9 +12,9 @@ app.use(express.json());
 require("./config/passport")(passport);
 app.use(passport.initialize());
 
-const userRoute = require("./routes/userRoutes");
-const profileRoute = require("./routes/profileRoutes");
-const postRoute = require("./routes/postRoutes");
+const userRoute = require("./routes/user.route");
+const profileRoute = require("./routes/profile.route");
+const postRoute = require("./routes/post.route");
 
 app.use("/api/posts", postRoute);
 app.use("/api/users", userRoute);

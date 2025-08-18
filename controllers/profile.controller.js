@@ -1,5 +1,4 @@
-const Profile = require("../models/profileModel");
-const User = require("../models/userModel");
+const Profile = require("../models/profile.model");
 
 const getProfile = async (req, res) => {
   try {
@@ -19,6 +18,33 @@ const getProfile = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getProfile:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
+
+const getProfileById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const profile = await Profile.findOne({ user: id })
+      .populate("user", "-password")
+      .populate("followers", "firstName lastName email")
+      .populate("following", "firstName lastName email");
+
+    if (!profile) {
+      return res.status(404).json({
+        message: "Profile not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      data: profile,
+    });
+  } catch (error) {
+    console.log("Error in getProfileById:", error);
     return res.status(500).json({
       message: "Internal Server Error",
       success: false,
@@ -127,6 +153,7 @@ const unfollowUser = async (req, res) => {
 
 module.exports = {
   getProfile,
+  getProfileById,
   updateProfile,
   followUser,
   unfollowUser,

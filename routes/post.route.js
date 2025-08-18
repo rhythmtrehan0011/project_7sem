@@ -8,7 +8,7 @@ const {
   addComment,
   getPosts,
   addReply,
-} = require("../controllers/postcontroller");
+} = require("../controllers/post.controller");
 
 const router = express.Router();
 

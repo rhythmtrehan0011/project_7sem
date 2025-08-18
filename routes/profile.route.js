@@ -5,11 +5,17 @@ const {
   updateProfile,
   followUser,
   unfollowUser,
-} = require("../controllers/profileController");
+  getProfileById,
+} = require("../controllers/profile.controller");
 
 const router = express.Router();
 
 router.get("/", passport.authenticate("jwt", { session: false }), getProfile);
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  getProfileById
+);
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
