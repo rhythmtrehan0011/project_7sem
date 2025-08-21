@@ -7,7 +7,8 @@ const dbConnect = require("./config/database");
 const app = express();
 const port = process.env.PORT || 4000;
 
-
+const replyRoute = require("./routes/replyRoutes");
+app.use("/api/posts", replyRoute);
 
 
 app.use(cookieParser());
