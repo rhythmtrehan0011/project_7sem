@@ -99,15 +99,20 @@ const getPostBySlug = async (req, res) => {
       .populate("comments.user", "firstname lastname email")
       .populate("comments.replies.user", "firstname lastname email");
     if (!post)
-      return res
-        .status(404)
-        .json({ success: false, message: "Post not found" });
-    res.status(200).json({ success: true, data: post });
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    res.status(200).json({
+      success: true,
+      data: post,
+    });
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .json({ success: false, message: "Unable to fetch post by slug" });
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch post by slug",
+    });
   }
 };
 
@@ -179,14 +184,21 @@ const getPostById = async (req, res) => {
       .populate("comments.user", "firstname lastname email")
       .populate("comments.replies.user", "firstname lastname email");
     if (!post) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Post not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
     }
-    res.status(200).json({ success: true, data: post });
+    res.status(200).json({
+      success: true,
+      data: post,
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Unable to fetch post" });
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch post",
+    });
   }
 };
 
