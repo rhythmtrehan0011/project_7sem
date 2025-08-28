@@ -82,7 +82,7 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-postSchema.index({ title: "text", body: "text" });
+postSchema.index({ title: "text", body: "text", tags: "text" });
 
 postSchema.pre("save", async function (next) {
   if (!this.isModified("title") && this.slug) return next();

@@ -56,6 +56,8 @@ const updateProfile = async (req, res) => {
   try {
     const { bio, location, avatar } = req.body;
     let profile = await Profile.findOne({ user: req.user.id });
+    const isNew = !profile;
+
     if (!profile) {
       profile = new Profile({
         user: req.user.id,
@@ -70,7 +72,9 @@ const updateProfile = async (req, res) => {
     }
     await profile.save();
     res.status(200).json({
-      message: "Profile updated successfully",
+      message: isNew
+        ? "Profile created successfully"
+        : "Profile updated successfully",
       success: true,
       data: profile,
     });
@@ -100,17 +104,19 @@ const followUser = async (req, res) => {
         success: false,
       });
     }
-    if (!me.following.includes(toFollowId)) {
+    if (!me.following.map(String).includes(toFollowId)) {
       me.following.push(toFollowId);
       await me.save();
     }
-    if (!toFollow.followers.includes(req.user.id)) {
+    if (!toFollow.followers.map(String).includes(req.user.id)) {
       toFollow.followers.push(req.user.id);
       await toFollow.save();
     }
     res.status(200).json({
       message: "User followed successfully",
       success: true,
+      me,
+      toFollow,
     });
   } catch (error) {
     console.error("Error in followUser:", error);
@@ -141,6 +147,8 @@ const unfollowUser = async (req, res) => {
     res.status(200).json({
       message: "User unfollowed successfully",
       success: true,
+      me,
+      toFollow,
     });
   } catch (error) {
     console.error("Error in unfollowUser:", error);
