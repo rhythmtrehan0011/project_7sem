@@ -3,8 +3,8 @@ const Post = require("../models/post.model");
 const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find()
-      .populate("author", "firstname lastname email")
-      .populate("comments.user", "firstname lastname email")
+      .populate("author", "firstName lastName email")
+      .populate("comments.user", "firstName lastName email")
       .sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
@@ -14,7 +14,7 @@ const getAllPosts = async (req, res) => {
     console.error(err);
     res.status(500).json({
       message: "Unable to fetch posts",
-      success: false,
+      success: false, 
     });
   }
 };

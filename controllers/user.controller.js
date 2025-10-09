@@ -49,7 +49,7 @@ const signUpUser = async (req, res) => {
   }
 };
 
-const signInUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -75,7 +75,7 @@ const signInUser = async (req, res) => {
     }
     const token = generateToken(existingUser._id,res);
     res.status(200).json({
-      message: "sign in successful",
+      message: "login successful",
       data: {
         firstName: existingUser.firstName,
         lastName: existingUser.lastName,
@@ -86,9 +86,22 @@ const signInUser = async (req, res) => {
       success: true,
     });
   } catch (err) {
-    console.log("Error in signinUser:", err);
+    console.log("Error in loginUser:", err);
     res.status(500).json({ message: "Internal Server error", success: false });
   }
 };
 
-module.exports = { signUpUser, signInUser };
+const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie('token');
+    res.status(200).json({
+      message: "Logout successful",
+      success: true,
+    });
+  } catch (err) {
+    console.log("Error in logoutUser:", err);
+    res.status(500).json({ message: "Internal Server error", success: false });
+  }
+};
+
+module.exports = { signUpUser, loginUser, logoutUser };
