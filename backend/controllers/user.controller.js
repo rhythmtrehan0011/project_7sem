@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const generateToken = require("../utils/generateToken");
 
 const signUpUser = async (req, res) => {
@@ -92,6 +93,89 @@ const signInUser = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        message: "Please provide an email",
+        success: false,
+      });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenHash = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+    user.resetPasswordToken = resetTokenHash;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+    await user.save();
+    const resetURL = `${
+      process.env.FRONTEND_URL || "http://localhost:3000"
+    }/reset-password/${resetToken}`;
+    res.status(200).json({
+      message: "Password reset token generated successfully",
+      resetURL,
+      success: true,
+    });
+  } catch (err) {
+    console.error("Error in forgotPassword:", err);
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+    if (!newPassword) {
+      return res.status(400).json({
+        message: "New password is required",
+        success: false,
+      });
+    }
+    const resetTokenHash = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+    const user = await User.findOne({
+      resetPasswordToken: resetTokenHash,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid or expired reset token",
+        success: false,
+      });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+    res.status(200).json({
+      message: "Password reset successful",
+      success: true,
+    });
+  } catch (err) {
+    console.error("Error in resetPassword:", err);
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
+
 const logoutUser = async (req, res) => {
   try {
     res.clearCookie("token");
@@ -108,4 +192,10 @@ const logoutUser = async (req, res) => {
   }
 };
 
-module.exports = { signUpUser, signInUser, logoutUser };
+module.exports = {
+  signUpUser,
+  signInUser,
+  forgotPassword,
+  resetPassword,
+  logoutUser,
+};
